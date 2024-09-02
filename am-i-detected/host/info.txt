@@ -1,0 +1,4 @@
+[[ Am I Detected ]]
+Software Owner; liablelua
+
+Anything here can be modified; but can't be redistrubited.
