@@ -1,15 +1,36 @@
 chrome.webNavigation.onCompleted.addListener((details) => {
   if (details.url.includes('roblox.com')) {
     setTimeout(function() {
-      fetch("https://users.roblox.com/v1/users/authenticated").then(response => response.json()).then(data => {
-        var username = data.name;
-        var display = data.displayName;
-        if (username == display) {
-            fetch("http://localhost:8080/?username=" + username);
-        } else {
-            fetch("http://localhost:8080/?username=" + display + " (@" + username + ")");
-        }
-      });
+      fetch("https://users.roblox.com/v1/users/authenticated")
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          var username = data.name;
+          var display = data.displayName;
+    
+          // Ensure both username and displayName exist
+          if (!username || !display) {
+            console.error('Username or displayName is undefined:', { username, display });
+            return;
+          }
+    
+          var url = "http://localhost:8080/?username=";
+          
+          if (username === display) {
+            url += encodeURIComponent(username);
+          } else {
+            url += encodeURIComponent(display + " (@" + username + ")");
+          }
+          
+          fetch(url);
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
     }, 100);
     setTimeout(function() {
       fetch("https://usermoderation.roblox.com/v1/not-approved")
@@ -36,6 +57,6 @@ chrome.webNavigation.onCompleted.addListener((details) => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-    }, 800);
+    }, 1250);
   }
 }, {url: [{urlMatches: '.*roblox.com.*'}]});
