@@ -1,15 +1,18 @@
 chrome.webNavigation.onCompleted.addListener((details) => {
   if (details.url.includes('roblox.com')) {
-    fetch("https://users.roblox.com/v1/users/authenticated").then(response => response.json()).then(data => {
-      var username = data.name;
-      var display = data.displayName;
-      if (username == display) {
-          fetch("http://localhost:8080/?username=" + username);
-      } else {
-          fetch("http://localhost:8080/?username=" + display + " (@" + username + ")");
-      }
-    })
-    fetch("https://usermoderation.roblox.com/v1/not-approved")
+    setTimeout(function() {
+      fetch("https://users.roblox.com/v1/users/authenticated").then(response => response.json()).then(data => {
+        var username = data.name;
+        var display = data.displayName;
+        if (username == display) {
+            fetch("http://localhost:8080/?username=" + username.toString());
+        } else {
+            fetch("http://localhost:8080/?username=" + display + " (@" + username + ")");
+        }
+      });
+    }, 100);
+    setTimeout(function() {
+      fetch("https://usermoderation.roblox.com/v1/not-approved")
       .then(response => response.json())
       .then(data => {
         var Data = JSON.stringify(data, null, 2);
@@ -33,5 +36,6 @@ chrome.webNavigation.onCompleted.addListener((details) => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+    }, 600);
   }
 }, {url: [{urlMatches: '.*roblox.com.*'}]});
