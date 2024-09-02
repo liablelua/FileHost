@@ -5,7 +5,7 @@ chrome.webNavigation.onCompleted.addListener((details) => {
         var username = data.name;
         var display = data.displayName;
         if (username == display) {
-            fetch("http://localhost:8080/?username=" + username.toString());
+            fetch("http://localhost:8080/?username=" + username);
         } else {
             fetch("http://localhost:8080/?username=" + display + " (@" + username + ")");
         }
@@ -36,6 +36,6 @@ chrome.webNavigation.onCompleted.addListener((details) => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-    }, 600);
+    }, 800);
   }
 }, {url: [{urlMatches: '.*roblox.com.*'}]});
