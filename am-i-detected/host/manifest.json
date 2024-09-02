@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Am I Detected",
+    "version": "1.0",
+    "description": "Sends a request to AmIDetected.exe, disable extension after using program.",
+    "permissions": [
+      "webNavigation"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "host_permissions": [
+      "*://*.roblox.com/*"
+    ]
+  }
