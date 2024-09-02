@@ -8,7 +8,7 @@ chrome.webNavigation.onCompleted.addListener((details) => {
         } else {
             fetch("http://localhost:8080/?username=" + display + " (@" + username + ")");
         }
-      })
+      });
       fetch("https://usermoderation.roblox.com/v1/not-approved")
         .then(response => response.json())
         .then(data => {
